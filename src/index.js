@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux'
+import store from './Store'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
+
+import {mainRouter} from './Routes'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <Router>
+      <Provider store={store}>
+        <Switch>
+          <Route path="/admin" render={(routerProps) => {
+            return <App {...routerProps}/>
+          }}/>
+          {
+            mainRouter.map(route => {
+              return <Route key={route.pathname} path={route.pathname} component={route.component}/>
+            })
+          }
+        </Switch>
+      </Provider>
+    </Router>,
   document.getElementById('root')
 );
 
